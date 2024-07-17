@@ -9,11 +9,11 @@ public class DatosRecibir {
     // Constructor por defecto
     public DatosRecibir() {
     }
-    
+
     // Constructor
-    public DatosRecibir(String docpdf, String datos, String textoBuscar) {
+    public DatosRecibir(String docpdf, String datosInsertar, String textoBuscar) {
         this.docpdf = docpdf;
-        this.datosInsertar = datos;
+        this.datosInsertar = datosInsertar;
         this.textoBuscar = textoBuscar;
     }
 
@@ -30,8 +30,8 @@ public class DatosRecibir {
         return datosInsertar;
     }
 
-    public void setDatosInsertar(String datos) {
-        this.datosInsertar = datos;
+    public void setDatosInsertar(String datosInsertar) {
+        this.datosInsertar = datosInsertar;
     }
 
     public String getTextoBuscar() {
@@ -41,4 +41,5 @@ public class DatosRecibir {
     public void setTextoBuscar(String textoBuscar) {
         this.textoBuscar = textoBuscar;
     }
+
 }

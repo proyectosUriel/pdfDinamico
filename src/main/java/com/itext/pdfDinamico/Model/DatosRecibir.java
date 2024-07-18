@@ -3,14 +3,14 @@ package com.itext.pdfDinamico.Model;
 public class DatosRecibir {
 
     private String docpdf;
-    private String textoBuscar;
+    private String idInputBuscar;
     private String datosInsertar;
    
 
     // Constructor
-    public DatosRecibir(String docpdf, String textoBuscar, String datosInsertar) {
+    public DatosRecibir(String docpdf, String idInputBuscar, String datosInsertar) {
         this.docpdf = docpdf;
-        this.textoBuscar = textoBuscar;
+        this.idInputBuscar = idInputBuscar;
         this.datosInsertar = datosInsertar;
     }
 
@@ -23,20 +23,20 @@ public class DatosRecibir {
         this.docpdf = docpdf;
     }
 
-    public String getTextoBuscar() {
-        return textoBuscar;
-    }
-
-    public void setTextoBuscar(String textoBuscar) {
-        this.textoBuscar = textoBuscar;
-    }
-
     public String getDatosInsertar() {
         return datosInsertar;
     }
 
     public void setDatosInsertar(String datosInsertar) {
         this.datosInsertar = datosInsertar;
+    }
+
+    public String getIdInputBuscar() {
+        return idInputBuscar;
+    }
+
+    public void setIdInputBuscar(String idInputBuscar) {
+        this.idInputBuscar = idInputBuscar;
     }
 
 }

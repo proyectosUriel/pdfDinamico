@@ -19,7 +19,7 @@ import com.itextpdf.layout.element.Table;
 
 @Service
 public class PdfService {
-     public void modifyPdf(DatosRecibir datosRecibir) throws IOException {
+    public void modifyPdf(DatosRecibir datosRecibir) throws IOException {
         // Convertir el contenido del PDF a un byte array stream para ser manipulado por iText
         byte[] pdfBytes = java.util.Base64.getDecoder().decode(datosRecibir.getDocpdf());
         File tempFile = File.createTempFile("tempPdf", ".pdf");
@@ -32,7 +32,8 @@ public class PdfService {
         boolean encontrado = false;
         for (int i = 1; i <= pdfDoc.getNumberOfPages(); i++) {
             String pageContent = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
-            if (pageContent.contains(datosRecibir.getTextoBuscar())) {
+            // Buscar el nombre del ID del input en lugar de un texto específico
+            if (pageContent.contains(datosRecibir.getIdInputBuscar())) {
                 encontrado = true;
                 // Crear un nuevo documento basado en el existente
                 Document document = new Document(pdfDoc);
@@ -47,7 +48,7 @@ public class PdfService {
                         table.addCell(new Cell().add(new Paragraph(columna)));
                     }
                 }
-                // Insertar la tabla después de encontrar el texto
+                // Insertar la tabla después de encontrar el nombre del ID del input
                 pdfDoc.addNewPage(i + 1);
                 document.add(table);
                 break;
@@ -60,7 +61,7 @@ public class PdfService {
         tempFile.delete();
 
         if (!encontrado) {
-            throw new IOException("Texto a buscar no encontrado en el PDF");
+            throw new IOException("Nombre del ID del input no encontrado en el PDF");
         }
     }
 }

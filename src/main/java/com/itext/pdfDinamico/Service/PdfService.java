@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 
+import org.springframework.stereotype.Service;
+
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -14,7 +16,7 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 
-
+@Service
 public class PdfService {
     public void modifyPdf(String pdfContent, String textoBuscar, String datosInsertar, String outputPath) throws IOException {
         // Convertir el contenido del PDF a un byte array stream para ser manipulado por iText

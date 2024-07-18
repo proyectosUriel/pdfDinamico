@@ -14,7 +14,7 @@ import com.itext.pdfDinamico.Model.DatosRecibir;
 import com.itext.pdfDinamico.Service.PdfService;
 
 @RestController
-@RequestMapping("/api/pdf")
+@RequestMapping("/pdf")
 public class GeneradorPDF {
 
     @Autowired
@@ -30,7 +30,7 @@ public class GeneradorPDF {
             String datosInsertar = datos.getDatosInsertar();
 
             // Ruta de salida del PDF modificado
-            String outputPath = "ruta/a/la/salida/modificado.pdf";
+            String outputPath = "~/Downloads/modificado.pdf";
             pdfService.modifyPdf(new String(pdfBytes), textoBuscar, datosInsertar, outputPath);
 
             return new ResponseEntity<>("PDF generado en: " + outputPath, HttpStatus.OK);

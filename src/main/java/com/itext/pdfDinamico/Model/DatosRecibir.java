@@ -3,18 +3,15 @@ package com.itext.pdfDinamico.Model;
 public class DatosRecibir {
 
     private String docpdf;
-    private String datosInsertar;
     private String textoBuscar;
-
-    // Constructor por defecto
-    public DatosRecibir() {
-    }
+    private String datosInsertar;
+   
 
     // Constructor
-    public DatosRecibir(String docpdf, String datosInsertar, String textoBuscar) {
+    public DatosRecibir(String docpdf, String textoBuscar, String datosInsertar) {
         this.docpdf = docpdf;
-        this.datosInsertar = datosInsertar;
         this.textoBuscar = textoBuscar;
+        this.datosInsertar = datosInsertar;
     }
 
     // Getters & Setters
@@ -26,20 +23,20 @@ public class DatosRecibir {
         this.docpdf = docpdf;
     }
 
-    public String getDatosInsertar() {
-        return datosInsertar;
-    }
-
-    public void setDatosInsertar(String datosInsertar) {
-        this.datosInsertar = datosInsertar;
-    }
-
     public String getTextoBuscar() {
         return textoBuscar;
     }
 
     public void setTextoBuscar(String textoBuscar) {
         this.textoBuscar = textoBuscar;
+    }
+
+    public String getDatosInsertar() {
+        return datosInsertar;
+    }
+
+    public void setDatosInsertar(String datosInsertar) {
+        this.datosInsertar = datosInsertar;
     }
 
 }

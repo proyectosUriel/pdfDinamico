@@ -7,6 +7,7 @@ import java.nio.file.Files;
 
 import org.springframework.stereotype.Service;
 
+import com.itext.pdfDinamico.Model.DatosRecibir;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -18,27 +19,28 @@ import com.itextpdf.layout.element.Table;
 
 @Service
 public class PdfService {
-    public void modifyPdf(String pdfContent, String textoBuscar, String datosInsertar, String outputPath) throws IOException {
+     public void modifyPdf(DatosRecibir datosRecibir) throws IOException {
         // Convertir el contenido del PDF a un byte array stream para ser manipulado por iText
+        byte[] pdfBytes = java.util.Base64.getDecoder().decode(datosRecibir.getDocpdf());
         File tempFile = File.createTempFile("tempPdf", ".pdf");
-        Files.write(tempFile.toPath(), pdfContent.getBytes());
+        Files.write(tempFile.toPath(), pdfBytes);
 
         PdfReader pdfReader = new PdfReader(tempFile.getAbsolutePath());
-        PdfWriter pdfWriter = new PdfWriter(new FileOutputStream(outputPath));
+        PdfWriter pdfWriter = new PdfWriter(new FileOutputStream("~/Downloads"));
         PdfDocument pdfDoc = new PdfDocument(pdfReader, pdfWriter);
 
         boolean encontrado = false;
         for (int i = 1; i <= pdfDoc.getNumberOfPages(); i++) {
             String pageContent = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
-            if (pageContent.contains(textoBuscar)) {
+            if (pageContent.contains(datosRecibir.getTextoBuscar())) {
                 encontrado = true;
                 // Crear un nuevo documento basado en el existente
                 Document document = new Document(pdfDoc);
-                float[] columnWidths = {1, 5}; // Definir los anchos de las columnas
+                float[] columnWidths = { 1, 5 }; // Definir los anchos de las columnas
                 Table table = new Table(columnWidths);
 
                 // Asumiendo que datosInsertar está en un formato separable, por ejemplo, CSV
-                String[] filas = datosInsertar.split("\n");
+                String[] filas = datosRecibir.getDatosInsertar().split("\n");
                 for (String fila : filas) {
                     String[] columnas = fila.split(",");
                     for (String columna : columnas) {

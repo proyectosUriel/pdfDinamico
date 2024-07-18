@@ -1,7 +1,5 @@
 package com.itext.pdfDinamico.Controller;
 
-import java.util.Base64;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,18 +20,11 @@ public class GeneradorPDF {
 
     @PostMapping("/generate")
     public ResponseEntity<String> generatePDF(@RequestBody DatosRecibir datos){
-
         try {
-            // Asumimos que el docpdf es un Base64 String del contenido del PDF
-            byte[] pdfBytes = Base64.getDecoder().decode(datos.getDocpdf());
-            String textoBuscar = datos.getTextoBuscar();
-            String datosInsertar = datos.getDatosInsertar();
+            // Llamar al servicio para modificar el PDF
+            pdfService.modifyPdf(datos);
 
-            // Ruta de salida del PDF modificado
-            String outputPath = "~/Downloads/modificado.pdf";
-            pdfService.modifyPdf(new String(pdfBytes), textoBuscar, datosInsertar, outputPath);
-
-            return new ResponseEntity<>("PDF generado en: " + outputPath, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

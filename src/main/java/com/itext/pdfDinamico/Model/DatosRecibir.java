@@ -1,14 +1,17 @@
 package com.itext.pdfDinamico.Model;
 
+import java.util.List;
+import java.util.Map;
+
 public class DatosRecibir {
 
     private String docpdf;
     private String idInputBuscar;
-    private String datosInsertar;
+    private List<Map<String, Object>> datosInsertar;
    
 
     // Constructor
-    public DatosRecibir(String docpdf, String idInputBuscar, String datosInsertar) {
+    public DatosRecibir(String docpdf, String idInputBuscar, List<Map<String, Object>> datosInsertar) {
         this.docpdf = docpdf;
         this.idInputBuscar = idInputBuscar;
         this.datosInsertar = datosInsertar;
@@ -23,11 +26,11 @@ public class DatosRecibir {
         this.docpdf = docpdf;
     }
 
-    public String getDatosInsertar() {
+    public List<Map<String, Object>> getDatosInsertar() {
         return datosInsertar;
     }
 
-    public void setDatosInsertar(String datosInsertar) {
+    public void setDatosInsertar(List<Map<String, Object>> datosInsertar) {
         this.datosInsertar = datosInsertar;
     }
 

@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itext.pdfDinamico.Model.DatosRecibir;
@@ -14,7 +15,6 @@ import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
@@ -23,6 +23,9 @@ import com.itextpdf.layout.element.Table;
 
 @Service
 public class PdfService {
+
+    @Autowired
+    private FormFieldExtractorService formFieldExtractorService;
 
     public void modifyPdf(DatosRecibir datosRecibir) throws IOException {
         // Convertir el contenido del PDF a un byte array stream para ser manipulado por iText
@@ -37,50 +40,45 @@ public class PdfService {
         PdfReader pdfReader = new PdfReader(tempFile.getAbsolutePath());
         PdfWriter pdfWriter = new PdfWriter(new FileOutputStream(downloadPath));
         PdfDocument pdfDoc = new PdfDocument(pdfReader, pdfWriter);
-
         Document document = new Document(pdfDoc);
 
-        boolean encontrado = false;
-        for (int i = 1; i <= pdfDoc.getNumberOfPages(); i++) {
-            String pageContent = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i));
+        // Obtener la posición del último campo
+        Rectangle lastFieldRect = formFieldExtractorService.getLastFieldPosition(tempFile.getAbsolutePath());
 
-            // Buscar el nombre del ID del input en lugar de un texto específico
-            if (pageContent.contains(datosRecibir.getIdInputBuscar())) {
-                encontrado = true;
+        // Coordenadas del último campo
+        float inputX = lastFieldRect.getX();
+        float inputY = lastFieldRect.getY();
 
-                // Crear la tabla
-                float[] columnWidths = {1, 3, 2}; // Anchos de las columnas
-                Table table = new Table(columnWidths).useAllAvailableWidth();
+        // Ajustar la posición de la tabla
+        float marginTop = 50; // Margen superior en puntos
+        float x = inputX; // Coordenada X en puntos
+        float y = inputY - marginTop; // Coordenada Y en puntos, ajustada con margen
 
-                // Agregar encabezados de columna si es necesario
-                table.addHeaderCell(new Cell().add(new Paragraph("ID")));
-                table.addHeaderCell(new Cell().add(new Paragraph("Nombre")));
-                table.addHeaderCell(new Cell().add(new Paragraph("Valor")));
+        // Crear la tabla
+        float[] columnWidths = {1, 3, 2}; // Anchos de las columnas
+        Table table = new Table(columnWidths).useAllAvailableWidth();
 
-                // Agregar filas a la tabla
-                List<Map<String, Object>> datos = datosRecibir.getDatosInsertar();
-                for (Map<String, Object> fila : datos) {
-                    table.addCell(new Cell().add(new Paragraph(fila.get("id").toString())));
-                    table.addCell(new Cell().add(new Paragraph(fila.get("nombre").toString())));
-                    table.addCell(new Cell().add(new Paragraph(fila.get("valor").toString())));
-                }
+        // Agregar encabezados de columna
+        table.addHeaderCell(new Cell().add(new Paragraph("ID")));
+        table.addHeaderCell(new Cell().add(new Paragraph("Nombre")));
+        table.addHeaderCell(new Cell().add(new Paragraph("Valor")));
 
-                // Agregar nueva página con la tabla
-                pdfDoc.addNewPage();
-                Rectangle pageSize = pdfDoc.getPage(1).getPageSize();
-                document.add(table.setFixedPosition(1, 50, 100, pageSize.getWidth() - 100));
-
-                break;
-            }
+        // Agregar filas a la tabla
+        List<Map<String, Object>> datos = datosRecibir.getDatosInsertar();
+        for (Map<String, Object> fila : datos) {
+            table.addCell(new Cell().add(new Paragraph(fila.get("id").toString())));
+            table.addCell(new Cell().add(new Paragraph(fila.get("nombre").toString())));
+            table.addCell(new Cell().add(new Paragraph(fila.get("valor").toString())));
         }
+
+        // Agregar nueva página con la tabla
+        pdfDoc.addNewPage();
+        document.add(table.setFixedPosition(1, x, y, pdfDoc.getPage(1).getPageSize().getWidth() - 100));
 
         pdfDoc.close();
         pdfWriter.close();
         pdfReader.close();
         tempFile.delete(); // Eliminar el archivo temporal después de usarlo
-
-        if (!encontrado) {
-            throw new IOException("Nombre del ID del input no encontrado en el PDF");
-        }
     }
 }
+

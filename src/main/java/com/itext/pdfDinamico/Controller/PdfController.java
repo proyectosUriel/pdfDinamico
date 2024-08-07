@@ -1,31 +1,71 @@
 package com.itext.pdfDinamico.Controller;
 
-import org.springframework.web.bind.annotation.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 
-import com.itext.pdfDinamico.Model.RequestData;
-import com.itext.pdfDinamico.Service.PdfProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import org.apache.commons.codec.binary.Base64;
+import com.itext.pdfDinamico.Service.PdfService;
+import com.itextpdf.io.exceptions.IOException;
+
 
 @RestController
 @RequestMapping("/pdf")
 public class PdfController {
 
-    @PostMapping("/process")
-    public String processPdf(@RequestBody RequestData requestData) {
+     @Autowired
+    private PdfService pdfService;
+
+    @PostMapping("/generate")
+    public ResponseEntity<InputStreamResource> highlightField(
+            @RequestParam("base64pdf") String base64pdf,
+            @RequestParam("fieldName") String fieldName) throws java.io.IOException {
+
         try {
-            // Decodificar el PDF de base64
-            byte[] pdfBytes = Base64.decodeBase64(requestData.getDocpdf());
+            // Decodificar el archivo PDF desde Base64
+            byte[] decodedPdf = Base64.getDecoder().decode(base64pdf);
+            
+            // Crear ByteArrayInputStream para el archivo PDF decodificado
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(decodedPdf);
 
-            // Procesar el PDF
-            PdfProcessor processor = new PdfProcessor();
-            byte[] processedPdfBytes = processor.processPdf(pdfBytes, requestData);
-
-            // Aquí podrías devolver el PDF procesado o guardarlo en algún lugar
-            return "PDF procesado con éxito";
-        } catch (Exception e) {
+            // Crear ByteArrayOutputStream para capturar el archivo PDF modificado
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            
+            // Procesar el PDF usando el servicio
+            pdfService.highlightField(inputStream, outputStream, fieldName);
+            
+            // Crear InputStreamResource para enviar el archivo modificado
+            ByteArrayInputStream modifiedInputStream = new ByteArrayInputStream(outputStream.toByteArray());
+            InputStreamResource resource = new InputStreamResource(modifiedInputStream);
+            
+            // Configurar los encabezados para la respuesta
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=modified.pdf");
+            
+            return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+            
+        } catch (IOException e) {
             e.printStackTrace();
-            return "Error procesando el PDF: " + e.getMessage();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

@@ -1,8 +1,15 @@
 package com.itext.pdfDinamico.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class DateFirmados {
+    @JsonProperty("name")
     private String name;
+
+    @JsonProperty("hash")
     private String hash;
+
+    @JsonProperty("id")
     private String id;
 
     // Constructor por defecto

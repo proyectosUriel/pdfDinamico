@@ -33,22 +33,24 @@ public class PdfController {
 
     @PostMapping("/generate")
     public ResponseEntity<String> highlightField(@RequestBody GeneralReceivingData data) {
-
+        
          try {
             // Decodificar el archivo PDF desde Base64
             byte[] decodedPdf = Base64.getDecoder().decode(data.getDocpdf());
 
             // Crear ByteArrayInputStream para el archivo PDF decodificado
             ByteArrayInputStream inputStream = new ByteArrayInputStream(decodedPdf);
-
+            
             // Crear ByteArrayOutputStream para capturar el archivo PDF modificado
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
+            
             // Llamar al servicio para procesar el PDF
             pdfService.highlightField(inputStream, outputStream, data.getDocumentosIniciales());
-
+            
             // Hacer prueba
-            pdfFieldHighlight.coor();
+            
+            System.out.println("Este es el contenido del pdf "+inputStream);
+            pdfFieldHighlight.coor(data.getDocpdf(),data.getDocumentosIniciales(),data.getDatosIniciales());
 
             // Guardar el PDF modificado en un archivo en el sistema de archivos
             String outputPath = "/home/uriel_raigon/Downloads/modified.pdf"; // Actualiza la ruta según sea necesario

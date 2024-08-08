@@ -2,13 +2,28 @@ package com.itext.pdfDinamico.Model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class GeneralReceivingData {
+    @JsonProperty("docpdf")
     private String docpdf;
+
+    @JsonProperty("DocumentosIniciales")
     private String DocumentosIniciales;
+
+    @JsonProperty("datosIniciales")
     private List<DateIniciales> datosIniciales;
+
+    @JsonProperty("DocumentosFirmados")
     private String DocumentosFirmados;
+
+    @JsonProperty("datosFirmados")
     private List<DateFirmados> datosFirmados;
+
+    @JsonProperty("EvidenciasProceso")
     private String EvidenciasProceso;
+
+    @JsonProperty("datosEvidenciaProceso")
     private List<DateEvidencias> datosEvidenciaProceso;
    
     // Constructor por defecto
@@ -20,17 +35,17 @@ public class GeneralReceivingData {
             String documentosFirmados, List<DateFirmados> datosFirmados, String evidenciasProceso,
             List<DateEvidencias> datosEvidenciaProceso) {
         this.docpdf = docpdf;
-        DocumentosIniciales = documentosIniciales;
+        this.DocumentosIniciales = documentosIniciales;
         this.datosIniciales = datosIniciales;
-        DocumentosFirmados = documentosFirmados;
+        this.DocumentosFirmados = documentosFirmados;
         this.datosFirmados = datosFirmados;
-        EvidenciasProceso = evidenciasProceso;
+        this.EvidenciasProceso = evidenciasProceso;
         this.datosEvidenciaProceso = datosEvidenciaProceso;
     }
 
     // Getters & Setters
     public String getDocpdf() {
-        return docpdf;
+        return this.docpdf;
     }
 
     public void setDocpdf(String docpdf) {
@@ -38,15 +53,15 @@ public class GeneralReceivingData {
     }
 
     public String getDocumentosIniciales() {
-        return DocumentosIniciales;
+        return this.DocumentosIniciales;
     }
 
     public void setDocumentosIniciales(String documentosIniciales) {
-        DocumentosIniciales = documentosIniciales;
+        this.DocumentosIniciales = documentosIniciales;
     }
 
     public List<DateIniciales> getDatosIniciales() {
-        return datosIniciales;
+        return this.datosIniciales;
     }
 
     public void setDatosIniciales(List<DateIniciales> datosIniciales) {
@@ -54,15 +69,15 @@ public class GeneralReceivingData {
     }
 
     public String getDocumentosFirmados() {
-        return DocumentosFirmados;
+        return this.DocumentosFirmados;
     }
 
     public void setDocumentosFirmados(String documentosFirmados) {
-        DocumentosFirmados = documentosFirmados;
+        this.DocumentosFirmados = documentosFirmados;
     }
 
     public List<DateFirmados> getDatosFirmados() {
-        return datosFirmados;
+        return this.datosFirmados;
     }
 
     public void setDatosFirmados(List<DateFirmados> datosFirmados) {
@@ -70,15 +85,15 @@ public class GeneralReceivingData {
     }
 
     public String getEvidenciasProceso() {
-        return EvidenciasProceso;
+        return this.EvidenciasProceso;
     }
 
     public void setEvidenciasProceso(String evidenciasProceso) {
-        EvidenciasProceso = evidenciasProceso;
+        this.EvidenciasProceso = evidenciasProceso;
     }
 
     public List<DateEvidencias> getDatosEvidenciaProceso() {
-        return datosEvidenciaProceso;
+        return this.datosEvidenciaProceso;
     }
 
     public void setDatosEvidenciaProceso(List<DateEvidencias> datosEvidenciaProceso) {

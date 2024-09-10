@@ -3,7 +3,7 @@ package com.itext.pdfDinamico.Model;
 import java.sql.Date;
 
 public class DateEvidencias {
-     private String etiqueta_nombre;
+    private String etiqueta_nombre;
     private String nombre;
     private String etiqueta_fecha;
     private Date fecha;

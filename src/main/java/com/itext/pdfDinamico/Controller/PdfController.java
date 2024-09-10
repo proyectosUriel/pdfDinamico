@@ -1,12 +1,10 @@
 package com.itext.pdfDinamico.Controller;
 
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.itext.pdfDinamico.Model.GeneralReceivingData;
 import com.itext.pdfDinamico.Service.PdfFieldHighlight;
-import com.itext.pdfDinamico.Service.PdfService;
 
 
 @RestController
@@ -26,30 +23,16 @@ import com.itext.pdfDinamico.Service.PdfService;
 public class PdfController {
 
     @Autowired
-    private PdfService pdfService;
-
-    @Autowired
     private PdfFieldHighlight pdfFieldHighlight;
 
     @PostMapping("/generate")
     public ResponseEntity<String> highlightField(@RequestBody GeneralReceivingData data) {
         
-         try {
-            // Decodificar el archivo PDF desde Base64
-            byte[] decodedPdf = Base64.getDecoder().decode(data.getDocpdf());
-
-            // Crear ByteArrayInputStream para el archivo PDF decodificado
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(decodedPdf);
-            
+         try {       
             // Crear ByteArrayOutputStream para capturar el archivo PDF modificado
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             
-            // Llamar al servicio para procesar el PDF
-            pdfService.highlightField(inputStream, outputStream, data.getDocumentosIniciales());
-            
             // Hacer prueba
-            
-            System.out.println("Este es el contenido del pdf "+inputStream);
             pdfFieldHighlight.coor(data.getDocpdf(),data.getDocumentosIniciales(),data.getDatosIniciales());
 
             // Guardar el PDF modificado en un archivo en el sistema de archivos

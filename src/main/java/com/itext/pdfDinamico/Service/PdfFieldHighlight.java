@@ -67,16 +67,19 @@ public class PdfFieldHighlight {
                                 .setTextAlignment(TextAlignment.LEFT)
                                 .setFontSize(8)
                                 .setBorder(null)
+                                .setPaddings(5, 5, 5, 5)
                         );
                         table.addCell(new Cell().add(new Paragraph(hash))
                                 .setTextAlignment(TextAlignment.LEFT)
                                 .setFontSize(8)
                                 .setBorder(null)
+                                .setPaddings(5, 5, 5, 5)
                         );
                         table.addCell(new Cell().add(new Paragraph(id))
                                 .setTextAlignment(TextAlignment.LEFT)
                                 .setFontSize(8)
                                 .setBorder(null)
+                                .setPaddings(5, 5, 5, 5)
                         );
                     }
 
@@ -86,7 +89,7 @@ public class PdfFieldHighlight {
                     // Establecer la posición fija para la tabla en el documento
                     // Float tableHeight = tableDimensionCalculator.calculateTableHeight(table, pageNumber, 2);
                     float x = rect.getLeft();
-                    float y = rect.getTop() - tableDimensionCalculator.calculateTableHeight(table, 20, 8); // Ajustar la altura de la tabla
+                    float y = rect.getTop() - tableDimensionCalculator.calculateTableHeight(table, 28, 8); // Ajustar la altura de la tabla
                     table.setFixedPosition(pageNumber, x, y, rect.getWidth());
                     // Añadir la tabla al documento
                     document.add(table);

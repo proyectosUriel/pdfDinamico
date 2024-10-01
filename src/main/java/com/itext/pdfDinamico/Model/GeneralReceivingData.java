@@ -23,7 +23,7 @@ public class GeneralReceivingData {
     @JsonProperty("EvidenciasProceso")
     private String EvidenciasProceso;
 
-    @JsonProperty("datosEvidenciaProceso")
+    @JsonProperty("datosProceso")
     private List<DateEvidencias> datosEvidenciaProceso;
    
     // Constructor por defecto

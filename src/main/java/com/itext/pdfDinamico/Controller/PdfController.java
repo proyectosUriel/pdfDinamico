@@ -1,13 +1,7 @@
 package com.itext.pdfDinamico.Controller;
 
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,25 +20,15 @@ public class PdfController {
     private PdfFieldHighlight pdfFieldHighlight;
 
     @PostMapping("/generate")
-    public ResponseEntity<String> highlightField(@RequestBody GeneralReceivingData data) {
-        
-         try {       
-            // Crear ByteArrayOutputStream para capturar el archivo PDF modificado
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            
-            // Hacer prueba
-            pdfFieldHighlight.coor(data.getDocpdf(),data.getDocumentosIniciales(),data.getDatosIniciales());
-
-            // Guardar el PDF modificado en un archivo en el sistema de archivos
-            String outputPath = "/home/uriel_raigon/Downloads/modified.pdf"; // Actualiza la ruta según sea necesario
-            Files.write(Paths.get(outputPath), outputStream.toByteArray());
-
-            // Retornar una respuesta con la ruta del archivo modificado
-            return ResponseEntity.ok("PDF modificado guardado en: " + outputPath);
-
-        } catch (IOException e) {
+    public ResponseEntity<String> generatePdf(@RequestBody GeneralReceivingData data) {
+        try {
+            // Llama al servicio que genera el PDF con los datos recibidos
+            pdfFieldHighlight.generatePdf(data);
+            return ResponseEntity.ok("PDF generado correctamente y guardado.");
+        } catch (Exception e) {
+            // Manejo de errores en caso de excepción
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al procesar el PDF");
+            return ResponseEntity.status(500).body("Ocurrió un error al generar el PDF: " + e.getMessage());
         }
     }
 }
